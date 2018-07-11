@@ -2,6 +2,8 @@ var express = require('express');
 const router = require('express-promise-router')();
 const controller = require('../controller/Localidade');
 
+const { validateParam, validateBody, schemas } = require('../validation/validator');
+
 router.route('/localidade')
     .get(controller.getAll)
 
@@ -10,17 +12,19 @@ router.route('/localidade/endereco')
 
 router.route('/localidade/:id')
 
-    .get(controller.getById)
-    .put(controller.update)
-    .delete(controller.delete)
+    .get(validateParam(schemas.idSchema, 'id'), controller.getById)
+    .put([validateParam(schemas.idSchema, 'user_id'), validateBody(schemas.localidadeSchema)],
+                        controller.update)
+    .delete(validateParam(schemas.idSchema, 'id'), controller.delete)
 
 router.route('/localidade/:id_Endereco/endereco')
 
-    .post(controller.postLocalidadeEndereco)
+    .post(validateParam(schemas.idSchema, 'id_Endereco') ,controller.postLocalidadeEndereco)
 
 router.route('/localidade/:id_Localidade/:id_Ficha')
 
-    .post(controller.postLocalidadeFicha)
+    .post([validateParam(schemas.idSchema, 'id_Localidade'),validateParam(schemas.idSchema, 'id_Ficha')],
+                        controller.postLocalidadeFicha)
 
 
 module.exports = router;
