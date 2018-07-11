@@ -1,19 +1,21 @@
 var express = require('express');
-var router = express.Router();
+const router = require('express-promise-router')();
 const controller = require('../controller/Ficha');
 
 router.route('/ficha')
 
     .get(controller.getAll)
 
-    .post(controller.post);
-
-    router.route('/ficha/:id')
+router.route('/ficha/:id')
     
     .get(controller.getById)
 
-    .put(controller.put)
+    .put(controller.update)
 
     .delete(controller.delete)
+
+router.route('/ficha/:id/paciente')
+
+    .post(controller.postNewFichaPaciente)
 
 module.exports = router;

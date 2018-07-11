@@ -15,6 +15,7 @@ mongoose.connect('mongodb://thales:tatiana7@ds018498.mlab.com:18498/mercado', {
 
 var fichaRoute = require('./routes/fichaRoute');
 var localidadeRoute = require('./routes/localidadeRoute')
+var pacienteRoute = require('./routes/pacienteRoute')
 
 //Configurações do App
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -23,6 +24,7 @@ app.use(bodyParser.json())
 
 app.use('/', fichaRoute);
 app.use('/', localidadeRoute);
+app.use('/', pacienteRoute);
 
 //Setando a App
 app.listen(8080, function () {

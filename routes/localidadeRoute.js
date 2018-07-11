@@ -1,10 +1,26 @@
 var express = require('express');
-var router = express.Router();
+const router = require('express-promise-router')();
 const controller = require('../controller/Localidade');
 
 router.route('/localidade')
-
-    .post(controller.post)
     .get(controller.getAll)
+
+router.route('/localidade/endereco')
+    .post(controller.postEndereco)
+
+router.route('/localidade/:id')
+
+    .get(controller.getById)
+    .put(controller.update)
+    .delete(controller.delete)
+
+router.route('/localidade/:id_Endereco/endereco')
+
+    .post(controller.postLocalidadeEndereco)
+
+router.route('/localidade/:id_Localidade/:id_Ficha')
+
+    .post(controller.postLocalidadeFicha)
+
 
 module.exports = router;

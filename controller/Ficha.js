@@ -1,82 +1,41 @@
-var Ficha = require('../model/Models').Ficha
-var Localidade = require('../model/Models').Localidade
+var Ficha = require('../model/ficha')
+var Localidade = require('../model/localidade')
+var Paciente = require('../model/paciente')
 
-exports.getAll = (req,res) => {
-    
-    Ficha.find((err, fichas) => {
-        if(err){
-            res.send(err)
-        }
-        res.json(fichas);
-    })
-}
+module.exports = {
+    getAll: async (req, res) => {
+        const fichas = await Ficha.find().populate('paciente').populate('localidade') ;
+        res.status(200).json(fichas);
+    },
 
-exports.getById = (req,res) => {
+    getById: async (req, res) => {
+        const ficha = await Ficha.findById(req.params.id);
+        res.status(200).json(ficha);
+    },
 
-    Ficha.findById(req.params.id, function(error, ficha) {
-        if(error)
-            res.send('Id da Ficha não encontrado....: ' + error);
+    update: async (req, res) => {
+        const newFicha = req.body;
+        await Ficha.findByIdAndUpdate(req.params.id, newFicha);
+        res.status(200).send('The ficha has been updated!');
+    },
 
-        res.json(ficha);
-    });
-}
+    delete: async (req, res) => {
+        await Localidade.findByIdAndRemove(req.params.id);
+        res.status(200).send('The car has been deleted!');
+    },
 
-exports.post = (req,res) => {
+    postNewFichaPaciente: async (req, res) => {
+        const newFicha = new Ficha(req.body);
+        const paciente = await Paciente.findById(req.params.id);
 
-    const ficha = new Ficha();    
+        newFicha.paciente = paciente;
+        await newFicha.save();
 
-    ficha.sintomas = req.body.sintomas,
-    ficha.doença = req.body.doença,
-    ficha.hipertenso = req.body.hipertenso,
-    ficha.alergico = req.body.alergico,
-    ficha.diabetes = req.body.diabetes,
-    ficha.prescricao = req.body.prescricao,
-    ficha.observacoes = req.body.observacoes,
+        paciente.ficha = newFicha
+        await paciente.save();
 
-    Ficha.findOne(ficha).populate(req.body.localidade).exec(function(err, ficha) {
-        ficha.populate(req.body.localidade);
-    })
-    
-    ficha.save(function(err, ficha){
-        res.json(ficha);
-    })
-}
-exports.put = (req,res) => {
-
-    Ficha.findById(req.params.id, function(error, ficha) {
-        if (error) 
-            res.send("Id do Ficha não encontrado....: " + error);
-
-        //dataDoAtendimento = req.body.dataDoAtendimento,
-        ficha.sintomas = req.body.sintomas,
-        ficha.doença = req.body.doença,
-        ficha.hipertenso = req.body.hipertenso,
-        ficha.alergico = req.body.alergico,
-        ficha.diabetes = req.body.diabetes,
-        ficha.prescricao = req.body.prescricao,
-        // paciente = req.body.paciente,
-        ficha.observacoes = req.body.observacoes,
-        localidade = req.body.localidade,
-
-        ficha.save(function(error) {
-            if(error)
-                res.send('Erro ao atualizar o Ficha....: ' + error);
-
-            res.json({ message: 'Ficha atualizado com sucesso!' });
-        });
-    });
-}
-
-exports.delete = (req,res) => {
-
-    Ficha.remove({
-        _id: req.params.id
-        }, function(error) {
-            if (error) 
-                res.send("Id do Ficha não encontrado....: " + error);
-
-            res.json({ message: 'Ficha Excluído com Sucesso!' });
-        });
+        res.status(201).json(newFicha);
+    }    
 }
 
 
