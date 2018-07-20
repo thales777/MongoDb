@@ -10,6 +10,7 @@ var ficha = new Schema({
     diabetes : Boolean,
     prescricao : String,
     observacoes : Boolean,
+    data : Date,
     localidade: { type: Schema.Types.ObjectId , ref: 'localidade'},
     paciente: { type: Schema.Types.ObjectId , ref: 'paciente'}
     

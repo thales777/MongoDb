@@ -1,22 +1,18 @@
 var express = require('express');
 const router = require('express-promise-router')();
-const controller = require('../controller/Paciente');
+const controller = require('../../controller/Pessoa/Gerente');
 
-router.route('/paciente')
+router.route('/gerente')
 
     .get(controller.getAll)
 
-router.route('/paciente/endereco')
-
-    .post(controller.postEndereco)
-
-router.route('/paciente/:id')
+router.route('/gerente/:id')
 
     .get(controller.getById)
     .put(controller.update)
     .delete(controller.delete)
 
-router.route('/paciente/:id/endereco')
+router.route('/:id/gerente')
 
     .post(controller.post)
 

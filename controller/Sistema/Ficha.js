@@ -1,15 +1,15 @@
-var Ficha = require('../model/ficha')
-var Localidade = require('../model/localidade')
-var Paciente = require('../model/paciente')
+var Ficha = require('../../model/Sistema/ficha')
+var Localidade = require('../../model/Sistema/localidade')
+var Paciente = require('../../model/Pessoa/paciente')
 
 module.exports = {
     getAll: async (req, res) => {
-        const fichas = await Ficha.find().populate('paciente').populate('localidade') ;
+        const fichas = await Ficha.find().populate('paciente').populate('localidade');
         res.status(200).json(fichas);
     },
 
     getById: async (req, res) => {
-        const ficha = await Ficha.findById(req.params.id);
+        const ficha = await Ficha.findById(req.params.id).populate('paciente');
         res.status(200).json(ficha);
     },
 
@@ -20,8 +20,8 @@ module.exports = {
     },
 
     delete: async (req, res) => {
-        await Localidade.findByIdAndRemove(req.params.id);
-        res.status(200).send('The car has been deleted!');
+        await Ficha.findByIdAndRemove(req.params.id);
+        res.status(200).send('The ficha has been deleted!');
     },
 
     postNewFichaPaciente: async (req, res) => {

@@ -1,8 +1,8 @@
 var express = require('express');
 const router = require('express-promise-router')();
-const controller = require('../controller/Ficha');
+const controller = require('../../controller/Sistema/Ficha');
 
-const { validateParam, validateBody, schemas } = require('../validation/validator');
+const { validateParam, validateBody, schemas } = require('../../validation/validator');
 
 router.route('/ficha')
 
@@ -19,7 +19,6 @@ router.route('/ficha/:id')
 
 router.route('/ficha/:id/paciente')
 
-    .post([validateParam(schemas.idSchema, 'id'), validateBody(schemas.fichaSchema)],
-                        controller.postNewFichaPaciente)
+    .post(controller.postNewFichaPaciente)
 
 module.exports = router;

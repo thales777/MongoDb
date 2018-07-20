@@ -9,7 +9,7 @@ var paciente = new Schema({
     sexo : Boolean,
     emEspera : Boolean,
     ficha: { type: Schema.Types.ObjectId , ref: 'ficha'},    
-    endereco: { type: Schema.Types.ObjectId , ref: 'endereco'},
+    endereco: { type: Schema.Types.ObjectId , ref: 'endereco'}
 })
 
 var Paciente = mongoose.model('paciente', paciente);

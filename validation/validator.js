@@ -3,7 +3,7 @@ const Joi = require('joi');
 module.exports = {
     validateParam: (schema, name) => {
         return (req, res, next) => {
-            const result = Joi.validate({ param: req.params[name] }, schema);
+            const result = Joi.validate({ param: req.params[name] }, schema, {abortEarly: false});
 
             if (result.error) {
                 return res.status(400).json(result.error);
@@ -22,7 +22,7 @@ module.exports = {
 
     validateBody: (schema) => {
         return (req, res, next) => {
-            const result = Joi.validate(req.body, schema);
+            const result = Joi.validate(req.body, schema, {abortEarly: false});
 
             if (result.error) {
                 return res.status(400).json(result.error);
@@ -62,8 +62,18 @@ module.exports = {
             hipertenso: Joi.boolean().required(),
             alergico: Joi.boolean().required(),
             diabetes: Joi.boolean().required(),
+            prescricao: Joi.string().required(),
             doença: Joi.string().required(),
             observacoes: Joi.boolean().required()
+        }),
+
+        enderecoSchema: Joi.object().keys({
+
+            rua: Joi.string().min(3).max(20).required(),
+            bairro: Joi.string().min(3).max(20).required(),
+            uf: Joi.string().length(2).required(),
+            cep: Joi.string().length(8).required(),
+            numero: Joi.number().integer().required()
         })
     }
 }

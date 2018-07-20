@@ -1,11 +1,14 @@
-const Localidade = require('../model/localidade')
-const Ficha = require('../model/ficha')
-const Endereco = require('../model/endereco')
+const Localidade = require('../../model/Sistema/localidade')
+const Ficha = require('../../model/Sistema/ficha')
+const Endereco = require('../../model/Sistema/endereco')
 
 
 module.exports = {
     getAll: async (req, res) => {
-        const localidades = await Localidade.find({}).populate('endereco').populate('fichas');
+        const localidades = await Localidade.find({}).populate('endereco')
+                                                     .populate('fichas')
+                                                     .populate('gerente')
+                                                     .populate('atendentes');
         res.status(200).json(localidades);
     },
 
@@ -19,26 +22,21 @@ module.exports = {
         res.status(201).json(newLocalidade);
     },
 
+    //Ver Esse metodo com mais calma
     postLocalidadeFicha: async (req, res) => {
         const localidade = await Localidade.findById(req.params.id_Localidade);
         const ficha = await Ficha.findById(req.params.id_Ficha);
+        ficha.localidade = localidade;
         localidade.fichas.push(ficha);
         await localidade.save();
+        await ficha.save();
 
         res.status(201).json(localidade);
     },
 
-
-
     getById: async (req, res) => {
         const localidade = await Localidade.findById(req.params.id).populate('endereco');
         res.status(200).json(localidade);
-    },
-
-    postEndereco: async (req, res) => {
-        const newEndereco = new Endereco(req.body);
-        const endereco = await newEndereco.save();
-        res.status(201).json(endereco);
     },
 
     update: async (req, res) => {
