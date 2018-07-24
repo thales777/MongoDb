@@ -5,7 +5,12 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors')
+var expressValidator = require('express-validator');
 
+//Passport
+const passport = require('passport');
+const passportConf = require('./passport');
+const passportJWT = passport.authenticate('jwt', { session: false });
 
 //Conectando o MongoDb
 
@@ -19,9 +24,10 @@ var fichaRoute = require('./routes/Sistema/fichaRoute');
 var localidadeRoute = require('./routes/Sistema/localidadeRoute')
 var pacienteRoute = require('./routes/Pessoa/pacienteRoute')
 var enderecoRoute = require('./routes/Sistema/enderecoRoute')
-var adminRoute = require('./routes/Pessoa/adminRoute')
+var diretorRoute = require('./routes/Pessoa/diretorRoute')
 var gerenteRoute = require('./routes/Pessoa/gerenteRoute')
 var atendenteRoute = require('./routes/Pessoa/atendenteRoute')
+var userRoute = require('./routes/Pessoa/userRoute')
 
 //Configurações do App
 
@@ -50,13 +56,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(bodyParser.json())
 
-app.use('/', fichaRoute);
-app.use('/', localidadeRoute);
-app.use('/', pacienteRoute);
-app.use('/', enderecoRoute);
-app.use('/', adminRoute);
-app.use('/', gerenteRoute);
-app.use('/', atendenteRoute);
+app.use(expressValidator())
+
+app.use('/', userRoute); 
+app.use('/',passportJWT,fichaRoute);
+app.use('/',passportJWT,localidadeRoute);
+app.use('/',passportJWT,pacienteRoute);
+app.use('/',passportJWT,enderecoRoute);
+app.use('/',passportJWT,diretorRoute);
+app.use('/',passportJWT,gerenteRoute);
+app.use('/',passportJWT,atendenteRoute);
 
 //Setando a App
 app.listen(8080, function () {

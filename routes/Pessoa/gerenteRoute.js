@@ -2,6 +2,8 @@ var express = require('express');
 const router = require('express-promise-router')();
 const controller = require('../../controller/Pessoa/Gerente');
 
+const {validateBody, schemas } = require('../../validation/validator');
+
 router.route('/gerente')
 
     .get(controller.getAll)
@@ -9,11 +11,8 @@ router.route('/gerente')
 router.route('/gerente/:id')
 
     .get(controller.getById)
-    .put(controller.update)
+    .put(validateBody(schemas.gerenteSchema) ,controller.update)
     .delete(controller.delete)
-
-router.route('/:id/gerente')
-
-    .post(controller.post)
+    .post(validateBody(schemas.gerenteSchema) ,controller.post)
 
 module.exports = router;

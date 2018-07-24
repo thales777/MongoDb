@@ -1,9 +1,10 @@
 const Gerente = require('../../model/Pessoa/gerente')
 const Localidade = require('../../model/Sistema/localidade')
+signToken = require('../../security/signToken')
 
 module.exports = {
     getAll: async (req, res) => {
-        const gerentes = await Gerente.find({});
+        const gerentes = await Gerente.find({}).populate('localidade');
         res.status(200).json(gerentes);
     }, 
     getById: async (req, res) => {
@@ -13,11 +14,10 @@ module.exports = {
     post: async (req, res) => {
         const newGerente = new Gerente(req.body);
         const localidade = await Localidade.findById(req.params.id);
-
         localidade.gerente = newGerente;
+        newGerente.localidade = localidade;
         await localidade.save();
         await newGerente.save();
-
         res.status(201).json(localidade);
     },
 

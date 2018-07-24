@@ -13,7 +13,6 @@ module.exports = {
     post: async (req, res) => {
         const newAtendente = new Atendente(req.body);
         const localidade = await Localidade.findById(req.params.id);
-
         localidade.atendentes.push(newAtendente);
         await localidade.save();
         await newAtendente.save();       
