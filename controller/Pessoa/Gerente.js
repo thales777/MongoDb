@@ -4,32 +4,52 @@ signToken = require('../../security/signToken')
 
 module.exports = {
     getAll: async (req, res) => {
-        const gerentes = await Gerente.find({}).populate('localidade');
-        res.status(200).json(gerentes);
+        try {
+            const gerentes = await Gerente.find({}).populate('localidade');
+            res.status(200).json(gerentes);
+        } catch(err) {
+            res.status(400).send(err.message)
+        }
     }, 
     getById: async (req, res) => {
-        const gerente = await Gerente.findById(req.params.id);
-        res.status(200).json(gerente);
+        try {
+            const gerente = await Gerente.findById(req.params.id);
+            res.status(200).json(gerente);
+        } catch(err) {
+            res.status(400).send(err.message)
+        }
     },
     post: async (req, res) => {
-        const newGerente = new Gerente(req.body);
-        const localidade = await Localidade.findById(req.params.id);
-        localidade.gerente = newGerente;
-        newGerente.localidade = localidade;
-        //await
-        localidade.save();
-        newGerente.save();
-        res.status(201).json(localidade);
+        try {
+            const newGerente = new Gerente(req.body);
+            const localidade = await Localidade.findById(req.params.id);
+            localidade.gerente = newGerente;
+            newGerente.localidade = localidade;
+            //await
+            localidade.save();
+            newGerente.save();
+            res.status(201).json(localidade);
+        } catch(err) {
+            res.status(400).send(err.message)
+        }
     },
 
     update: async (req, res) => {
-        const newGerente = req.body;
-        await Gerente.findByIdAndUpdate(req.params.id, newGerente);
-        res.status(200).send('The Gerente has been updated!');
+        try {
+            const newGerente = req.body;
+            await Gerente.findByIdAndUpdate(req.params.id, newGerente);
+            res.status(200).send('The Gerente has been updated!');
+        } catch(err) {
+            res.status(400).send(err.message)
+        }
     },
 
     delete: async (req, res) => {
-        await Gerente.findByIdAndRemove(req.params.id);
-        res.status(200).send('The Gerente has been deleted!');
+        try {
+            await Gerente.findByIdAndRemove(req.params.id);
+            res.status(200).send('The Gerente has been deleted!');
+        } catch(err){
+            res.status(400).send(err.message)
+        }
     }
 }
