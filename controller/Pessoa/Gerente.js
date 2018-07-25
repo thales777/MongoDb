@@ -16,8 +16,9 @@ module.exports = {
         const localidade = await Localidade.findById(req.params.id);
         localidade.gerente = newGerente;
         newGerente.localidade = localidade;
-        await localidade.save();
-        await newGerente.save();
+        //await
+        localidade.save();
+        newGerente.save();
         res.status(201).json(localidade);
     },
 

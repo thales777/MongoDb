@@ -30,9 +30,9 @@ module.exports = {
 
         newFicha.paciente = paciente;
         await newFicha.save();
-
+        //await
         paciente.ficha = newFicha
-        await paciente.save();
+        paciente.save();
 
         res.status(201).json(newFicha);
     }    

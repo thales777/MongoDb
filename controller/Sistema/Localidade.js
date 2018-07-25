@@ -17,19 +17,19 @@ module.exports = {
         const endereco = await Endereco.findById(req.params.id_Endereco);
 
         newLocalidade.endereco = endereco;
-        await newLocalidade.save();
+        newLocalidade.save();
 
         res.status(201).json(newLocalidade);
     },
 
-    //Ver Esse metodo com mais calma
     postLocalidadeFicha: async (req, res) => {
         const localidade = await Localidade.findById(req.params.id_Localidade);
         const ficha = await Ficha.findById(req.params.id_Ficha);
         ficha.localidade = localidade;
         localidade.fichas.push(ficha);
-        await localidade.save();
-        await ficha.save();
+        //await
+        localidade.save();
+        ficha.save();
 
         res.status(201).json(localidade);
     },
