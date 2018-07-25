@@ -4,11 +4,11 @@ const Endereco = require('../../model/Sistema/endereco')
 
 module.exports = {
     getAll: async (req, res) => {
-        const pacientes = await Paciente.find({}).populate('endereco').populate('ficha').populate('localidade');
+        const pacientes = await Paciente.find({}).populate('endereco').populate('localidade');
         res.status(200).json(pacientes);
     }, 
     getById: async (req, res) => {
-        const paciente = await Paciente.findById(req.params.id).populate('ficha').populate('endereco');
+        const paciente = await Paciente.findById(req.params.id).populate('endereco');
         res.status(200).json(paciente);
     },
     post: async (req, res) => {

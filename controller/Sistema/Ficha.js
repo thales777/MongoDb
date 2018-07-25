@@ -4,7 +4,7 @@ var Paciente = require('../../model/Pessoa/paciente')
 
 module.exports = {
     getAll: async (req, res) => {
-        const fichas = await Ficha.find().populate('paciente').populate('localidade');
+        const fichas = await Ficha.find().populate('paciente');
         res.status(200).json(fichas);
     },
 
