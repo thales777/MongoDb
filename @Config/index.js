@@ -1,3 +1,3 @@
 module.exports = {
-    JWT_SECRET: 'codeworkrauthentication'
+    JWT_SECRET: 'ApsSecret123456'
   };

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var diretor = new Schema({    
     nome : String
-})
+} , { versionKey: false } )
 
 var Diretor = mongoose.model('diretor', diretor);
 

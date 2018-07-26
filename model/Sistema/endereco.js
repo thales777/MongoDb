@@ -8,7 +8,7 @@ var endereco = new Schema({
     cep : String,
     numero : Number,
     localidade: { type: Schema.Types.ObjectId, ref: 'localidade' }
-})
+} , { versionKey: false } )
 
 const Endereco = mongoose.model('endereco', endereco);
 

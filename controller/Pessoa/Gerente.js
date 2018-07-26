@@ -1,6 +1,5 @@
 const Gerente = require('../../model/Pessoa/gerente')
 const Localidade = require('../../model/Sistema/localidade')
-signToken = require('../../security/signToken')
 
 module.exports = {
     getAll: async (req, res) => {

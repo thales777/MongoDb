@@ -4,9 +4,8 @@ var Schema = mongoose.Schema;
 var gerente = new Schema({
     nome : String,
     cpf : String,
-    localidade: { type: Schema.Types.ObjectId , ref: 'localidade'}
-    
-})
+    localidade: { type: Schema.Types.ObjectId , ref: 'localidade'} 
+}, { versionKey: false } )
 
 var Gerente = mongoose.model('gerente', gerente);
 

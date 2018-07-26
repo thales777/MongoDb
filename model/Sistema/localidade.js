@@ -7,7 +7,7 @@ var localidade = new Schema({
     gerente: { type: Schema.Types.ObjectId, ref: 'gerente' },
     atendentes: [{ type: Schema.Types.ObjectId, ref: 'atendente' }],
     endereco: { type: Schema.Types.ObjectId, ref: 'endereco' }
-})
+} ,{ versionKey: false } )
 
 const Localidade = mongoose.model('localidade', localidade);
 

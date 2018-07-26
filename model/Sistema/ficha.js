@@ -1,8 +1,7 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
-var ficha = new Schema({
-    
+var ficha = new Schema({ 
     sintomas : String,
     doença : String,
     hipertenso : Boolean,
@@ -12,9 +11,8 @@ var ficha = new Schema({
     observacoes : Boolean,
     data : Date,
     localidade: { type: Schema.Types.ObjectId , ref: 'localidade'},
-    paciente: { type: Schema.Types.ObjectId , ref: 'paciente'}
-    
-})
+    paciente: { type: Schema.Types.ObjectId , ref: 'paciente'} 
+}, { versionKey: false } )
 
 var Ficha = mongoose.model('ficha', ficha);
 

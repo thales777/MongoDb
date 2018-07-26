@@ -3,6 +3,12 @@ const Gerente = require('../../model/Pessoa/gerente')
 const Diretor = require('../../model/Pessoa/diretor')
 const Atendente = require('../../model/Pessoa/atendente')
 
+//Imports Segurança
+
+var JWT = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+var signToken = require('../../security/signToken')
+
 module.exports = {
     getAll: async (req, res) => {
         try {
@@ -23,15 +29,30 @@ module.exports = {
         }
     },
     login: async (req, res, next) => {
-        try {
-            var login = req.body.login;
-            const user = await User.findOne({login})
-            const token = signToken(user);
-            console.log(token)
-            res.send(user)
-        } catch(err){
-            res.status(400).send(err.message)
+
+        if(!req.body.login) {
+            return res.status(401).send({ "success": false, "message": "A `username` is required"});
+        } else if(!req.body.senha) {
+            return res.status(401).send({ "success": false, "message": "A `password` is required"});
         }
+        let login = req.body.login;
+        let senha = req.body.senha;
+    
+        const user = await User.findOne({login});
+        
+        if(!user){
+            return res.status(401).send({ "success": false, "message": "Não foi encontrado usuario com esse login"})
+        }
+    
+        bcrypt.compare(senha, user.senha, function(error, result) {
+            if(error || !result) {
+                return res.status(401).send({ "success": false, "message": "Invalid username and password" });
+            }
+            var token = JWT.signToken(user);
+            res.setHeader("authorization", token);
+            res.send(user);
+        });
+    
     },
     postGerente: async (req, res) => {
         try {
@@ -40,8 +61,6 @@ module.exports = {
             const newGerente = await Gerente.findById(req.params.id);
             user.gerente = newGerente;
             await user.save();
-            const token = signToken(user);
-            console.log(token);
             res.status(201).json(user);
         } catch(err){
             res.status(400).send(err.message)
@@ -54,8 +73,6 @@ module.exports = {
             const newAtendente = await Atendente.findById(req.params.id)
             user.atendente = newAtendente;
             await user.save();
-            const token = signToken(user);
-            console.log(token);
             res.status(201).json(user);
         } catch(err){
             res.status(400).send(err.message)
@@ -68,8 +85,6 @@ module.exports = {
             const newDiretor = await Diretor.findById(req.params.id)
             user.diretor = newDiretor;
             await user.save();
-            const token = signToken(user);
-            console.log(token);
             res.status(201).json(user);
         } catch(err){
             res.status(400).send(err.message)

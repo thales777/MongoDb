@@ -9,11 +9,12 @@ var user = new Schema({
       type: String,
       enum: ['Gerente','Diretor','Atendente'],
     },
+    token: String,
     diretor: { type: Schema.Types.ObjectId , ref: 'diretor'},
     atendente: { type: Schema.Types.ObjectId , ref: 'atendente'},
     gerente: { type: Schema.Types.ObjectId , ref: 'gerente'},
     paciente: { type: Schema.Types.ObjectId , ref: 'paciente'}
-})
+}, { versionKey: false } )
 
 user.pre('save', async function(next) {
     try {
@@ -28,14 +29,6 @@ user.pre('save', async function(next) {
       next(error);
     }
   });
-  
-  user.methods.isValidPassword = async function(newPassword) {
-    try {
-      return await bcrypt.compare(newPassword, this.senha);
-    } catch(error) {
-      throw new Error(error);
-    }
-  }
 
 var User = mongoose.model('user', user);
 

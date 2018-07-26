@@ -6,11 +6,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors')
 var expressValidator = require('express-validator');
-
-//Passport
-const passport = require('passport');
-const passportConf = require('./passport');
-const passportJWT = passport.authenticate('jwt', { session: false });
+var validateToken = require('./security/validateToken')
 
 //Conectando o MongoDb
 
@@ -46,6 +42,8 @@ app.use(function (req, res, next) {
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
 
+    res.setHeader('Access-Control-Expose-Headers', "authorization")
+
     // Pass to next layer of middleware
     next();
 });
@@ -58,14 +56,14 @@ app.use(bodyParser.json())
 
 app.use(expressValidator())
 
-app.use('/', userRoute); 
-app.use('/',passportJWT,fichaRoute);
-app.use('/',passportJWT,localidadeRoute);
-app.use('/',passportJWT,pacienteRoute);
-app.use('/',passportJWT,enderecoRoute);
-app.use('/',passportJWT,diretorRoute);
-app.use('/',passportJWT,gerenteRoute);
-app.use('/',passportJWT,atendenteRoute);
+app.use('/',userRoute); 
+app.use('/',validateToken,fichaRoute);
+app.use('/',localidadeRoute);
+app.use('/',pacienteRoute);
+app.use('/',enderecoRoute);
+app.use('/',diretorRoute);
+app.use('/',gerenteRoute);
+app.use('/',atendenteRoute);
 
 //Setando a App
 app.listen(8080, function () {
