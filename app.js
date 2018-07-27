@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors')
 var expressValidator = require('express-validator');
-var validateToken = require('./security/validateToken')
+var validateToken = require('./src/security/validateToken')
 
 //Conectando o MongoDb
 
@@ -16,14 +16,14 @@ mongoose.connect('mongodb://thales:tatiana7@ds018498.mlab.com:18498/mercado', {
 
 //Rotas
 
-var fichaRoute = require('./routes/Sistema/fichaRoute');
-var localidadeRoute = require('./routes/Sistema/localidadeRoute')
-var pacienteRoute = require('./routes/Pessoa/pacienteRoute')
-var enderecoRoute = require('./routes/Sistema/enderecoRoute')
-var diretorRoute = require('./routes/Pessoa/diretorRoute')
-var gerenteRoute = require('./routes/Pessoa/gerenteRoute')
-var atendenteRoute = require('./routes/Pessoa/atendenteRoute')
-var userRoute = require('./routes/Pessoa/userRoute')
+var fichaRoute = require('./src/routes/Sistema/fichaRoute');
+var localidadeRoute = require('./src/routes/Sistema/localidadeRoute')
+var pacienteRoute = require('./src/routes/Pessoa/pacienteRoute')
+var enderecoRoute = require('./src/routes/Sistema/enderecoRoute')
+var diretorRoute = require('./src/routes/Pessoa/diretorRoute')
+var gerenteRoute = require('./src/routes/Pessoa/gerenteRoute')
+var atendenteRoute = require('./src/routes/Pessoa/atendenteRoute')
+var userRoute = require('./src/routes/Pessoa/userRoute')
 
 //Configurações do App
 
